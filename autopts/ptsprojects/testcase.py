@@ -747,6 +747,13 @@ class TestCase(PTSCallback):
                not is_cleanup_func(cmd):
                 cmd.start()
 
+        # Notify artifact collector once so per-test logging and sniffer capture begin
+        try:
+            from autopts.tools.artifact_collector import get_collector
+            get_collector().on_test_start(self)
+        except Exception as _ac_exc:
+            log(f"artifact_collector.on_test_start failed: {_ac_exc}")
+
     def post_run(self, error_code):
         """Method called after test case is run in PTS
 
@@ -771,6 +778,14 @@ class TestCase(PTSCallback):
         # otherwise 4th test case just blocks eternally
         if not get_global_end():
             time.sleep(3)
+
+        # Notify artifact collector once so PTS log file is closed, sniffer saved,
+        # and the per-test result manifest is written.
+        try:
+            from autopts.tools.artifact_collector import get_collector
+            get_collector().on_test_end(self, error_code)
+        except Exception as _ac_exc:
+            log(f"artifact_collector.on_test_end failed: {_ac_exc}")
 
         for cmd in self.cmds:
             cmd.stop()

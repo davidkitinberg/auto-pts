@@ -244,6 +244,15 @@ class ClientCallback(PTSCallback):
                     logtype_string, log_time, test_case_name,
                     log_message)
 
+        # Write to per-test PTS Automation Mode log (no-op when not collecting)
+        try:
+            from autopts.tools.artifact_collector import get_collector
+            get_collector().append_pts_log(
+                test_case_name, logtype_string, log_time, log_message
+            )
+        except Exception:
+            pass  # never let logging errors break the PTS callback chain
+
     def on_implicit_send(self, project_name, wid, test_case_name, description,
                          style):
         """Implements:
