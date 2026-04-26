@@ -1,0 +1,14 @@
+termcolor
+coloredlogs
+schedule
+psutil
+pyserial
+pyyaml
+gitpython
+pylink-square
+xlsxwriter
+google-api-python-client
+oauth2client
+hidapi
+yepkit-pykush
+pyudev

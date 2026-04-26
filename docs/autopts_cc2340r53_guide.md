@@ -303,38 +303,20 @@ cd ~/auto-pts
 # If using a venv, activate it first:
 source ~/ti-workspace/.venv/bin/activate
 
-# Install client requirements and the package itself
-pip install -r autoptsclient_requirements.txt
+# Install the WSL client requirements and the package itself
+pip install -r requirements-wsl.txt
 pip install -e .
 ```
 
-### 7.2 Install Runtime Dependencies
+### 7.2 Install socat
 
-The `setup.py` does not declare all runtime dependencies. Some may not be covered by `autoptsclient_requirements.txt` either. Install them manually:
-
-```bash
-pip install \
-  termcolor \
-  hid \
-  psutil \
-  pyserial \
-  pyyaml \
-  pylink-square \
-  xlsxwriter \
-  gitpython \
-  google-api-python-client \
-  oauth2client
-```
-
-> **Note:** If you are installing system-wide (no venv), add `--break-system-packages` to each `pip install` command. Inside a venv this is not needed.
-
-### 7.3 Install socat
+The WSL requirements file covers the Python dependencies used by the one-click client flow. Install `socat` separately:
 
 ```bash
 sudo apt install socat
 ```
 
-`socat` is **required** for TTY mode — it bridges the serial port to the UNIX domain socket that the BTP stack uses.
+> **Note:** If you are installing system-wide (no venv), add `--break-system-packages` to the `pip install` command. Inside a venv this is not needed.
 
 ### 7.4 Verify USB Serial Port
 
@@ -421,11 +403,8 @@ Then open CMD or PowerShell and install the server-side packages:
 git clone https://github.com/intel/auto-pts.git
 cd auto-pts
 
-:: Install Windows-specific dependencies
-py -m pip install pywin32 wmi pyserial
-
 :: Install server requirements
-py -m pip install --user -r autoptsserver_requirements.txt
+py -m pip install --user -r requirements-windows.txt
 py -m pip install -e .
 
 :: Verify installation
@@ -882,7 +861,7 @@ This checklist covers the one-time setup. Once completed, use [Appendix B](#appe
 [ ] Python 3.10+ installed ("Add Python to PATH" checked)
 [ ] auto-pts cloned: git clone https://github.com/intel/auto-pts.git
 [ ] Server deps installed: py -m pip install pywin32 wmi pyserial
-[ ] Server requirements: py -m pip install -r autoptsserver_requirements.txt
+[ ] Server requirements: py -m pip install -r requirements-windows.txt
 [ ] auto-pts installed: py -m pip install -e .
 [ ] Verify: py -m pip show auto-pts
 ```
@@ -897,8 +876,7 @@ This checklist covers the one-time setup. Once completed, use [Appendix B](#appe
 [ ] Python venv created and activated
 [ ] Twister requirements installed (scripts/requirements-*.txt)
 [ ] auto-pts cloned: git clone https://github.com/intel/auto-pts.git ~/auto-pts
-[ ] Client deps installed: pip install -r autoptsclient_requirements.txt
-[ ] Extra deps installed: pip install termcolor hid psutil pylink-square ...
+[ ] Client requirements: pip install -r requirements-wsl.txt
 [ ] auto-pts installed: pip install -e .
 [ ] Board Python file in place: autopts/ptsprojects/boards/lp_em_cc2340r53.py
 [ ] BTP tester firmware built: west build -p auto -b lp_em_cc2340r53/cc2340r53

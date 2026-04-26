@@ -1,0 +1,12 @@
+{
+  "name": "GAP/BROB/BCST/BV-02-C",
+  "project": "GAP",
+  "status": "PASS",
+  "start_time": "2026-04-14T12:18:30",
+  "end_time": "2026-04-14T12:19:01",
+  "duration_s": 31.61,
+  "log_dir": "/home/david/ti-embedded-stack/auto-pts/logs/cli_port_65001/2026_04_14_12_17_59/GAP_BROB_BCST_BV-02-C_2026_04_14_12_18_27",
+  "autopts_log": "GAP_BROB_BCST_BV-02-C_2026_04_14_12_18_27.log",
+  "pts_log": "pts_automation_mode.log",
+  "sniffer_capture": null
+}

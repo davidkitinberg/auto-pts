@@ -1,7 +1,2 @@
-wmi
-pywin32
-utils
-psutil
-yepkit-pykush
-hidapi
-pyserial
+-r requirements-windows.txt
+

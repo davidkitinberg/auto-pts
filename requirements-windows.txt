@@ -1,0 +1,6 @@
+pywin32
+wmi
+psutil
+pyserial
+hidapi
+yepkit-pykush

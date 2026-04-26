@@ -58,7 +58,7 @@ For auto-pts client under Linux:
 
 2. Additionally, install required Python modules with:
 
-        python3 -m pip install --user -r autoptsclient_requirements.txt
+        python3 -m pip install --user -r requirements-wsl.txt
 
 3. If using Nordic nRF board as DUT, install `nrfutil` tool.
 
@@ -94,13 +94,13 @@ To be able to run PTS in automation mode, there should be no PTS instances runni
 
 1. Install required modules with:
 
-        python.exe -m pip install --user -r autoptsserver_requirements.txt
+        python.exe -m pip install --user -r requirements-windows.txt
 
 For auto-pts client:
 
 1. Install required modules with:
 
-        python.exe -m pip install --user -r autoptsclient_requirements.txt
+        python.exe -m pip install --user -r requirements-wsl.txt
 
 2. Download socat.exe from https://sourceforge.net/projects/unix-utils/files/socat/1.7.3.2/ and add to PATH socat.exe directory.
 

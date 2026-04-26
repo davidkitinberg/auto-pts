@@ -1,15 +1,2 @@
-termcolor
-pyserial
-wheel
-coloredlogs
-schedule
-xlsxwriter
-gcg
-google-api-python-client
-oauth2client
-pylink-square
-openpyxl
-pyyaml
-yepkit-pykush
-hidapi
-pyudev
+-r requirements-wsl.txt
+
