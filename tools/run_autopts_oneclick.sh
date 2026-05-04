@@ -3,14 +3,12 @@ set -euo pipefail
 
 # One-click AutoPTS orchestrator for WSL + Windows.
 #
-# Required arguments:
-#   --tests <suite-or-case>
+# Required argument:
 #   --pts-ip <windows-host-ip>
 #
 # Example:
 #   tools/run_autopts_oneclick.sh \
-#     --tests GAP/BROB/BCST/BV-01-C \
-#     --tests GAP/BROB/BCST/BV-02-C \
+#     --workspace-file "C:\\Users\\USER\\Documents\\Profile Tuning Suite\\PTS_PROJECT\\PTS_PROJECT.pqw6" \
 #     --pts-ip 172.21.128.1 \
 #     --elf "Z:\\home\\david\\ti-workspace\\zephyr\\build\\zephyr\\zephyr.elf"
 
@@ -21,6 +19,8 @@ REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 TESTS=""
 PTS_IP=""
 WORKSPACE="zephyr-master"
+WORKSPACE_FILE=""
+WORKSPACE_RESOLVED=""
 ELF_PATH='Z:\home\david\ti-workspace\zephyr\build\zephyr\zephyr.elf'
 TTY_DEV="/dev/ttyACM0"
 BOARD="lp_em_cc2340r53"
@@ -40,15 +40,20 @@ DRY_RUN=0
 usage() {
     cat <<'EOF'
 Usage:
-  tools/run_autopts_oneclick.sh --tests <TESTS> --pts-ip <IP> [options]
+    tools/run_autopts_oneclick.sh --pts-ip <IP> [selection-options] [options]
 
 Required:
-    --tests <value>            Test(s) to run (e.g. GAP/BROB/BCST or GAP).
-                                                         Can be repeated or comma-separated.
   --pts-ip <value>           Windows host IP for autoptsserver.py
 
+Selection options:
+    --workspace-file <value>    Path to a PTS workspace (.pqw6). If this is a Linux path,
+                                                            it is converted to Windows path before launching the client.
+    --workspace <value>         Workspace name/path passed to client (default: zephyr-master)
+    --tests <value>             Test(s) to run (e.g. GAP/BROB/BCST or GAP).
+                                                            Can be repeated or comma-separated.
+                                                            If omitted, AutoPTS runs enabled tests from workspace.
+
 Options:
-  --workspace <value>        Workspace name/path passed to client (default: zephyr-master)
   --elf <value>              Kernel image path passed to client
   --tty <value>              TTY device (default: /dev/ttyACM0)
   --board <value>            Board name (default: lp_em_cc2340r53)
@@ -69,6 +74,7 @@ Options:
 
 Notes:
 - Run from any location; script auto-resolves repo root.
+- `--workspace-file` takes precedence over `--workspace` when both are provided.
 - For fully non-interactive USB setup, configure sudoers for:
   /sbin/modprobe cdc_acm and /bin/chmod 666 /dev/ttyACM0
 EOF
@@ -155,6 +161,7 @@ parse_args() {
                 ;;
             --pts-ip) PTS_IP="$2"; shift 2 ;;
             --workspace) WORKSPACE="$2"; shift 2 ;;
+            --workspace-file) WORKSPACE_FILE="$2"; shift 2 ;;
             --elf) ELF_PATH="$2"; shift 2 ;;
             --tty) TTY_DEV="$2"; shift 2 ;;
             --board) BOARD="$2"; shift 2 ;;
@@ -176,9 +183,47 @@ parse_args() {
         esac
     done
 
-    [[ -n "${TESTS}" ]] || { err "--tests is required"; usage; exit 2; }
     [[ -n "${PTS_IP}" ]] || { err "--pts-ip is required"; usage; exit 2; }
 
+    if [[ -n "${WORKSPACE_FILE}" && "${WORKSPACE}" != "zephyr-master" ]]; then
+        warn "Both --workspace-file and --workspace were provided; using --workspace-file."
+    fi
+
+    if [[ -z "${TESTS}" ]]; then
+        warn "No --tests provided. Client will run enabled tests from selected workspace."
+    fi
+
+}
+
+resolve_workspace() {
+    local ws
+    if [[ -n "${WORKSPACE_FILE}" ]]; then
+        ws="${WORKSPACE_FILE}"
+    else
+        ws="${WORKSPACE}"
+    fi
+
+    if [[ "${ws,,}" == *.pqw6 ]]; then
+        # If workspace path points to local Linux filesystem, convert it
+        # so Windows autoptsserver can open it.
+        if [[ "${ws}" == /* || "${ws}" == ./* || "${ws}" == ../* ]]; then
+            if [[ -f "${ws}" ]]; then
+                WORKSPACE_RESOLVED="$(wslpath -w "${ws}")"
+            else
+                if [[ "${DRY_RUN}" -eq 1 ]]; then
+                    warn "Workspace file not found (dry-run): ${ws}"
+                    WORKSPACE_RESOLVED="${ws}"
+                else
+                    err "Workspace file not found: ${ws}"
+                    exit 1
+                fi
+            fi
+        else
+            WORKSPACE_RESOLVED="${ws}"
+        fi
+    else
+        WORKSPACE_RESOLVED="${ws}"
+    fi
 }
 
 resolve_local_ip() {
@@ -342,12 +387,17 @@ build_client_cmd() {
     local cmd
     cmd="cd ${REPO_ROOT@Q} && "
 
-    cmd+="python3 ./autoptsclient-zephyr.py ${WORKSPACE@Q} ${ELF_PATH@Q} "
+    cmd+="python3 ./autoptsclient-zephyr.py ${WORKSPACE_RESOLVED@Q} ${ELF_PATH@Q} "
     cmd+="-t ${TTY_DEV@Q} -b ${BOARD@Q} "
     cmd+="-i ${PTS_IP@Q} -S ${PTS_SRV_PORT@Q} -C ${PTS_CLI_PORT@Q} "
     cmd+="-l ${CLIENT_LOCAL_IP@Q} "
     cmd+="--iut-mode tty --tty-baudrate ${TTY_BAUD@Q} "
     cmd+="-d "
+
+    if [[ -z "${TESTS}" ]]; then
+        printf '%s' "$cmd"
+        return
+    fi
 
     # TESTS may contain comma-separated values and/or repeated --tests values.
     local tc tc_clean
@@ -392,17 +442,22 @@ generate_report() {
 main() {
     parse_args "$@"
     check_wsl_prereqs
+    resolve_workspace
     resolve_local_ip
     preflight_checks
 
     log "Resolved config:"
-    log "  tests=${TESTS}"
+    if [[ -n "${TESTS}" ]]; then
+        log "  tests=${TESTS}"
+    else
+        log "  tests=<workspace-enabled>"
+    fi
     log "  pts_ip=${PTS_IP} srv_port=${PTS_SRV_PORT} cli_port=${PTS_CLI_PORT}"
     if [[ -n "${PTS_DONGLE}" ]]; then
         log "  pts_dongle=${PTS_DONGLE}"
     fi
     log "  tty=${TTY_DEV} board=${BOARD} baud=${TTY_BAUD}"
-    log "  workspace=${WORKSPACE}"
+    log "  workspace=${WORKSPACE_RESOLVED}"
     log "  elf=${ELF_PATH}"
     log "  local_ip=${CLIENT_LOCAL_IP}"
     usb_setup
