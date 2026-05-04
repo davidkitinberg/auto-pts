@@ -15,3 +15,7 @@ venv
 
 .vscode
 .idea
+
+# Ignore AutoPTS runtime logs and generated reports
+logs/
+report.html
