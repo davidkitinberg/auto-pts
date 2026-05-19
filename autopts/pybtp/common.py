@@ -585,6 +585,18 @@ supported_svcs_cmds = {
         "service": 1 << defs.BTP_SERVICE_ID_OTS,
         "supported_commands": defs.BTP_OTS_CMD_READ_SUPPORTED_COMMANDS
     },
+    "BPS": {
+        "service": 1 << defs.BTP_SERVICE_ID_BPS,
+        "supported_commands": defs.BTP_BPS_CMD_READ_SUPPORTED_COMMANDS
+    },
+    "WSS": {
+        "service": 1 << defs.BTP_SERVICE_ID_WSS,
+        "supported_commands": defs.BTP_WSS_CMD_READ_SUPPORTED_COMMANDS
+    },
+    "SPS": {
+        "service": 1 << defs.BTP_SERVICE_ID_SPS,
+        "supported_commands": defs.BTP_SPS_CMD_READ_SUPPORTED_COMMANDS
+    },
     "PBP": {
         "service": 1 << defs.BTP_SERVICE_ID_PBP,
         "supported_commands": defs.BTP_PBP_CMD_READ_SUPPORTED_COMMANDS
@@ -675,6 +687,12 @@ reg_unreg_service = {
                  defs.BTP_INDEX_NONE, defs.BTP_SERVICE_ID_TMAP),
     "ots_reg": (defs.BTP_SERVICE_ID_CORE, defs.BTP_CORE_CMD_REGISTER_SERVICE,
                 defs.BTP_INDEX_NONE, defs.BTP_SERVICE_ID_OTS),
+    "bps_reg": (defs.BTP_SERVICE_ID_CORE, defs.BTP_CORE_CMD_REGISTER_SERVICE,
+                defs.BTP_INDEX_NONE, defs.BTP_SERVICE_ID_BPS),
+    "wss_reg": (defs.BTP_SERVICE_ID_CORE, defs.BTP_CORE_CMD_REGISTER_SERVICE,
+                defs.BTP_INDEX_NONE, defs.BTP_SERVICE_ID_WSS),
+    "sps_reg": (defs.BTP_SERVICE_ID_CORE, defs.BTP_CORE_CMD_REGISTER_SERVICE,
+                defs.BTP_INDEX_NONE, defs.BTP_SERVICE_ID_SPS),
     "pbp_reg": (defs.BTP_SERVICE_ID_CORE, defs.BTP_CORE_CMD_REGISTER_SERVICE,
                 defs.BTP_INDEX_NONE, defs.BTP_SERVICE_ID_PBP),
     "sdp_reg": (defs.BTP_SERVICE_ID_CORE, defs.BTP_CORE_CMD_REGISTER_SERVICE,

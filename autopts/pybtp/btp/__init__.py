@@ -18,6 +18,7 @@
 from autopts.pybtp.btp.aics import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.ascs import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.bap import *  # noqa: F403 # used in many files : TODO import directly in files not with *
+from autopts.pybtp.btp.bps import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.btp import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.cap import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.cas import *  # noqa: F403 # used in many files : TODO import directly in files not with *
@@ -42,10 +43,12 @@ from autopts.pybtp.btp.pacs import *  # noqa: F403 # used in many files : TODO i
 from autopts.pybtp.btp.pbp import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.rfcomm import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.sdp import *  # noqa: F403 # used in many files : TODO import directly in files not with *
+from autopts.pybtp.btp.sps import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.sm import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.tbs import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.tmap import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.vcp import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.vcs import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 from autopts.pybtp.btp.vocs import *  # noqa: F403 # used in many files : TODO import directly in files not with *
+from autopts.pybtp.btp.wss import *  # noqa: F403 # used in many files : TODO import directly in files not with *
 # GENERATOR append 1

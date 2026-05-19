@@ -18,6 +18,7 @@ import logging
 from autopts.ptsprojects.stack.layers.aics import AICS
 from autopts.ptsprojects.stack.layers.ascs import ASCS
 from autopts.ptsprojects.stack.layers.bap import BAP
+from autopts.ptsprojects.stack.layers.bps import BPS
 from autopts.ptsprojects.stack.layers.cap import CAP
 from autopts.ptsprojects.stack.layers.ccp import CCP
 from autopts.ptsprojects.stack.layers.core import CORE
@@ -40,11 +41,13 @@ from autopts.ptsprojects.stack.layers.pacs import PACS
 from autopts.ptsprojects.stack.layers.pbp import PBP
 from autopts.ptsprojects.stack.layers.rfcomm import RFCOMM
 from autopts.ptsprojects.stack.layers.sdp import SDP
+from autopts.ptsprojects.stack.layers.sps import SPS
 from autopts.ptsprojects.stack.layers.tbs import TBS
 from autopts.ptsprojects.stack.layers.tmap import TMAP
 from autopts.ptsprojects.stack.layers.vcp import VCP
 from autopts.ptsprojects.stack.layers.vcs import VCS
 from autopts.ptsprojects.stack.layers.vocs import VOCS
+from autopts.ptsprojects.stack.layers.wss import WSS
 
 # GENERATOR append 1
 from autopts.ptsprojects.stack.synch import Synch
@@ -86,6 +89,9 @@ class Stack:
         self.gtbs = None
         self.tmap = None
         self.ots = None
+        self.bps = None
+        self.wss = None
+        self.sps = None
         self.pbp = None
         self.sdp = None
         self.csis = None
@@ -191,6 +197,15 @@ class Stack:
     def ots_init(self):
         self.ots = OTS()
 
+    def bps_init(self):
+        self.bps = BPS()
+
+    def wss_init(self):
+        self.wss = WSS()
+
+    def sps_init(self):
+        self.sps = SPS()
+
     def pbp_init(self):
         self.pbp = PBP()
 
@@ -283,6 +298,15 @@ class Stack:
 
         if self.ots:
             self.ots_init()
+
+        if self.bps:
+            self.bps_init()
+
+        if self.wss:
+            self.wss_init()
+
+        if self.sps:
+            self.sps_init()
 
         if self.pbp:
             self.pbp_init()

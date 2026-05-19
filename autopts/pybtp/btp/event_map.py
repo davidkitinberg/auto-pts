@@ -1,6 +1,7 @@
 from .aics import AICS_EV
 from .ascs import ASCS_EV
 from .bap import BAP_EV
+from .bps import BPS_EV
 from .cap import CAP_EV
 from .ccp import CCP_EV
 from .core import CORE_EV
@@ -21,11 +22,13 @@ from .pacs import PACS_EV
 from .pbp import PBP_EV
 from .rfcomm import RFCOMM_EV
 from .sdp import SDP_EV
+from .sps import SPS_EV
 from .tbs import TBS_EV
 from .tmap import TMAP_EV
 from .vcp import VCP_EV
 from .vcs import VCS_EV
 from .vocs import VOCS_EV
+from .wss import WSS_EV
 
 # GENERATOR append 1
 
@@ -33,6 +36,7 @@ __all__ = [
     "AICS_EV",
     "ASCS_EV",
     "BAP_EV",
+    "BPS_EV",
     "CAP_EV",
     "CCP_EV",
     "CORE_EV",
@@ -53,10 +57,12 @@ __all__ = [
     "PBP_EV",
     "RFCOMM_EV",
     "SDP_EV",
+    "SPS_EV",
     "TBS_EV",
     "TMAP_EV",
     "VCP_EV",
     "VCS_EV",
     "VOCS_EV",
+    "WSS_EV",
 # GENERATOR append 2
 ]

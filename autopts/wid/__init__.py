@@ -16,6 +16,7 @@ from .aics import aics_wid_hdl
 from .ascs import ascs_wid_hdl
 from .bap import bap_wid_hdl
 from .bass import bass_wid_hdl
+from .bls import bls_wid_hdl
 from .ccp import ccp_wid_hdl
 from .csip import csip_wid_hdl
 from .csis import csis_wid_hdl
@@ -38,12 +39,14 @@ from .ots import ots_wid_hdl
 from .pacs import pacs_wid_hdl
 from .pbp import pbp_wid_hdl
 from .rfcomm import rfcomm_wid_hdl
+from .scps import scps_wid_hdl
 from .sdp import sdp_wid_hdl
 from .tbs import tbs_wid_hdl
 from .tmap import tmap_wid_hdl
 from .vcp import vcp_wid_hdl
 from .vcs import vcs_wid_hdl
 from .vocs import vocs_wid_hdl
+from .wss import wss_wid_hdl
 
 # GENERATOR append 1
 from .wid import generic_wid_hdl
@@ -53,6 +56,7 @@ __all__ = [
     "ascs_wid_hdl",
     "bap_wid_hdl",
     "bass_wid_hdl",
+    "bls_wid_hdl",
     "ccp_wid_hdl",
     "csip_wid_hdl",
     "csis_wid_hdl",
@@ -72,13 +76,15 @@ __all__ = [
     "ots_wid_hdl",
     "pacs_wid_hdl",
     "pbp_wid_hdl",
+    "rfcomm_wid_hdl",
+    "scps_wid_hdl",
     "sdp_wid_hdl",
     "tbs_wid_hdl",
     "tmap_wid_hdl",
     "vcp_wid_hdl",
     "vcs_wid_hdl",
     "vocs_wid_hdl",
-    "rfcomm_wid_hdl",
+    "wss_wid_hdl",
 # GENERATOR append 2
     "generic_wid_hdl",
 ]

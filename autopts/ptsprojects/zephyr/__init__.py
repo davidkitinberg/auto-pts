@@ -18,6 +18,7 @@ from . import (
                ascs,
                bap,
                bass,
+               bls,
                cap,
                cas,
                ccp,
@@ -42,6 +43,7 @@ from . import (
                pacs,
                pbp,
                rfcomm,
+               scps,
                sdp,
                sm,
                tbs,
@@ -49,6 +51,7 @@ from . import (
                vcp,
                vcs,
                vocs,
+               wss,
 # GENERATOR append 1
 )
 
@@ -57,6 +60,7 @@ __all__ = [
     "ascs",
     "bap",
     "bass",
+    "bls",
     "cap",
     "cas",
     "ccp",
@@ -80,6 +84,8 @@ __all__ = [
     "ots",
     "pacs",
     "pbp",
+    "rfcomm",
+    "scps",
     "sdp",
     "sm",
     "tbs",
@@ -87,7 +93,7 @@ __all__ = [
     "vcp",
     "vcs",
     "vocs",
-    "rfcomm",
+    "wss",
 # GENERATOR append 2
 ]
 

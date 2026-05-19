@@ -595,6 +595,18 @@ def core_reg_svc_ots():
     core_reg_svc_univ("ots_reg", "OTS")
 
 
+def core_reg_svc_bps():
+    core_reg_svc_univ("bps_reg", "BPS")
+
+
+def core_reg_svc_wss():
+    core_reg_svc_univ("wss_reg", "WSS")
+
+
+def core_reg_svc_sps():
+    core_reg_svc_univ("sps_reg", "SPS")
+
+
 def core_reg_svc_pbp():
     core_reg_svc_univ("pbp_reg", "PBP")
 
@@ -689,6 +701,7 @@ def event_handler(hdr, data):
         AICS_EV,
         ASCS_EV,
         BAP_EV,
+        BPS_EV,
         CAP_EV,
         CCP_EV,
         CORE_EV,
@@ -709,11 +722,13 @@ def event_handler(hdr, data):
         PBP_EV,
         RFCOMM_EV,
         SDP_EV,
+        SPS_EV,
         TBS_EV,
         TMAP_EV,
         VCP_EV,
         VCS_EV,
         VOCS_EV,
+        WSS_EV,
         # GENERATOR append 2
     )
     stack = get_stack()
@@ -747,6 +762,9 @@ def event_handler(hdr, data):
         defs.BTP_SERVICE_ID_TBS: (TBS_EV, stack.tbs),
         defs.BTP_SERVICE_ID_TMAP: (TMAP_EV, stack.tmap),
         defs.BTP_SERVICE_ID_OTS: (OTS_EV, stack.ots),
+        defs.BTP_SERVICE_ID_BPS: (BPS_EV, stack.bps),
+        defs.BTP_SERVICE_ID_WSS: (WSS_EV, stack.wss),
+        defs.BTP_SERVICE_ID_SPS: (SPS_EV, stack.sps),
         defs.BTP_SERVICE_ID_PBP: (PBP_EV, stack.pbp),
         defs.BTP_SERVICE_ID_SDP: (SDP_EV, stack.sdp),
         defs.BTP_SERVICE_ID_RFCOMM: (RFCOMM_EV, stack.rfcomm),
