@@ -33,3 +33,7 @@ def hdl_wid_20001(_: WIDParams):
 def hdl_wid_20109(_: WIDParams):
     btp.wss_indicate()
     return True
+
+
+def hdl_wid_0(_: WIDParams):
+    return True

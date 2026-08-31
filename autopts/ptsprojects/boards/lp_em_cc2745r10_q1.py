@@ -9,7 +9,7 @@
 # under the terms and conditions of the GNU General Public License,
 # version 2, as published by the Free Software Foundation.
 #
-# This program is distributed in the hope it will be useful, but WITHOUT
+# This program is distributed in the hope that it will be useful, but WITHOUT
 # ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
 # FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
 # more details.
@@ -21,24 +21,11 @@ from autopts.bot.common import check_call
 
 supported_projects = ['zephyr']
 
-board_type = 'lp_em_cc2340r53/cc2340r53'
+board_type = 'lp_em_cc2745r10_q1/cc2745r10_q1'
 
 
 def reset_cmd(iutctl):
-    """Reset the LP_EM_CC2340R53 via TI's OpenOCD (XDS110 probe).
-
-    The CC2340R53 ROM bootloader does not reliably start the
-    application after an OpenOCD ``reset run``.  Instead we halt the
-    CPU, read the initial SP and PC from the application vector table
-    at the start of flash, load those values into the registers and
-    resume execution.  This effectively performs a cold-start of the
-    firmware and triggers the BTP IUT-ready event that auto-pts waits
-    for before each test case.
-
-    OpenOCD is resolved from the TI_OPENOCD_INSTALL_DIR environment
-    variable (same convention used in Zephyr's board.cmake), falling
-    back to ~/ti-openocd.
-    """
+    """Reset the LP_EM_CC2745R10_Q1 via TI's OpenOCD (XDS110 probe)."""
     ti_base = os.environ.get('TI_OPENOCD_INSTALL_DIR')
     if ti_base:
         openocd_bin = os.path.join(ti_base, 'openocd', 'bin', 'openocd')
@@ -48,9 +35,6 @@ def reset_cmd(iutctl):
         openocd_bin = os.path.join(openocd_base, 'src', 'openocd')
         openocd_scripts = os.path.join(openocd_base, 'tcl')
 
-    # Each TCL command gets its own -c flag because the CC2340R53
-    # OpenOCD target doesn't reliably execute them when semicolon-
-    # separated in a single -c string.
     tcl_cmds = [
         'init',
         'halt',
@@ -65,7 +49,7 @@ def reset_cmd(iutctl):
     parts = [
         f'sudo {openocd_bin}',
         f'-s {openocd_scripts}',
-        '-f board/ti_lp_em_cc2340r53.cfg',
+        '-f board/ti_lp_em_cc2745r10.cfg',
     ]
     for c in tcl_cmds:
         parts.append(f'-c "{c}"')
@@ -75,7 +59,7 @@ def reset_cmd(iutctl):
 
 def build_and_flash(zephyr_wd, tester_app_dir, board, debugger_snr,
                     conf_file=None, project_repos=None, env_cmd=None, *args):
-    """Build and flash a Zephyr tester application for TI CC2340R53."""
+    """Build and flash a Zephyr tester application for TI CC2745R10_Q1."""
     logging.debug("%s: %s %s %s %s", build_and_flash.__name__, zephyr_wd,
                   tester_app_dir, board, conf_file)
 

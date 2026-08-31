@@ -193,6 +193,26 @@ The command below starts AutoPTS server on Windows:
 
     python.exe autoptsserver.py
 
+## WSL one-click runner lifecycle
+
+`tools/run_autopts_oneclick.sh` can launch the Windows AutoPTS server, run the
+selected tests, and generate the HTML report. A server launched by the wrapper
+is owned by that invocation and is stopped automatically after report
+generation. Cleanup also runs when the client fails or the wrapper is
+interrupted, so its Windows console and a Teledyne Bluetooth Protocol Viewer
+started by that PTS instance are not left running.
+
+If the configured server port is already reachable, the wrapper reuses that
+server and deliberately leaves it running because it did not create it. Use
+`--no-server-launch` when the server is managed manually or shared by multiple
+clients.
+
+The runner also detects the Windows/WSL addresses, attaches a shared USB probe
+to WSL through usbipd, and selects the BTP serial interface by USB identity.
+`usbipd bind` remains a one-time Windows Administrator action. See
+[WSL one-click runner](docs/wsl_oneclick_runner.md) for the exact flow and
+[adding a board](docs/adding_a_board.md) for the board-porting checklist.
+
 There are separate `autoptsclient-*.py` scripts to lunch AutoPTS Client depending on the tested stack.
 
 **Testing Zephyr Host Stack on QEMU**

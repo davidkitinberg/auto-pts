@@ -23,23 +23,17 @@ SCAN_WINDOW = 30
 def set_pixits(ptses):
     pts = ptses[0]
 
-    pts.set_pixit("SCPS", "TSPX_bd_addr_iut", "DEADBEEFDEAD")
-    pts.set_pixit("SCPS", "TSPX_iut_device_name_in_adv_packet_for_random_address", "")
-    pts.set_pixit("SCPS", "TSPX_time_guard", "180000")
-    pts.set_pixit("SCPS", "TSPX_use_implicit_send", "TRUE")
-    pts.set_pixit("SCPS", "TSPX_mtu_size", "23")
-    pts.set_pixit("SCPS", "TSPX_secure_simple_pairing_pass_key_confirmation", "FALSE")
-    pts.set_pixit("SCPS", "TSPX_delete_link_key", "FALSE")
-    pts.set_pixit("SCPS", "TSPX_pin_code", "0000")
-    pts.set_pixit("SCPS", "TSPX_use_dynamic_pin", "FALSE")
-    pts.set_pixit("SCPS", "TSPX_delete_ltk", "FALSE")
-    pts.set_pixit("SCPS", "TSPX_security_enabled", "FALSE")
-    pts.set_pixit("SCPS", "TSPX_iut_setup_att_over_br_edr", "FALSE")
-    pts.set_pixit("SCPS", "TSPX_scan_interval", str(SCAN_INTERVAL))
-    pts.set_pixit("SCPS", "TSPX_scan_window", str(SCAN_WINDOW))
-    pts.set_pixit("SCPS", "TSPX_scan_filter", "00")
-    pts.set_pixit("SCPS", "TSPX_advertising_interval_min", "160")
-    pts.set_pixit("SCPS", "TSPX_advertising_interval_max", "160")
+    pts.set_pixit("ScPS", "TSPX_bd_addr_iut", "DEADBEEFDEAD")
+    pts.set_pixit("ScPS", "TSPX_iut_device_name_in_adv_packet_for_random_address", "")
+    pts.set_pixit("ScPS", "TSPX_time_guard", "180000")
+    pts.set_pixit("ScPS", "TSPX_use_implicit_send", "TRUE")
+    pts.set_pixit("ScPS", "TSPX_mtu_size", "23")
+    pts.set_pixit("ScPS", "TSPX_secure_simple_pairing_pass_key_confirmation", "FALSE")
+    pts.set_pixit("ScPS", "TSPX_delete_link_key", "FALSE")
+    pts.set_pixit("ScPS", "TSPX_pin_code", "0000")
+    pts.set_pixit("ScPS", "TSPX_use_dynamic_pin", "FALSE")
+    pts.set_pixit("ScPS", "TSPX_delete_ltk", "FALSE")
+    pts.set_pixit("ScPS", "TSPX_security_enabled", "FALSE")
 
 
 def test_cases(ptses):
@@ -52,7 +46,7 @@ def test_cases(ptses):
         TestFunc(stack.gap_init, iut_device_name),
         TestFunc(btp.gap_read_ctrl_info),
         TestFunc(lambda: pts.update_pixit_param(
-            "SCPS", "TSPX_bd_addr_iut", stack.gap.iut_addr_get_str())),
+            "ScPS", "TSPX_bd_addr_iut", stack.gap.iut_addr_get_str())),
         TestFunc(btp.core_reg_svc_gatt),
         TestFunc(stack.gatt_init),
         TestFunc(btp.gap_set_conn),
@@ -64,8 +58,8 @@ def test_cases(ptses):
     ]
 
     tc_list = []
-    for tc_name in pts.get_test_case_list('SCPS'):
-        tc_list.append(ZTestCase("SCPS", tc_name, cmds=pre_conditions,
+    for tc_name in pts.get_test_case_list('ScPS'):
+        tc_list.append(ZTestCase("ScPS", tc_name, cmds=pre_conditions,
                                  generic_wid_hdl=scps_wid_hdl))
 
     return tc_list

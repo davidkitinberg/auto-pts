@@ -9,6 +9,7 @@
 #
 
 import logging
+import re
 
 from autopts.ptsprojects.stack import get_stack
 from autopts.pybtp import btp
@@ -33,3 +34,19 @@ def hdl_wid_20001(_: WIDParams):
 def hdl_wid_20108(_: WIDParams):
     btp.sps_refresh_request()
     return True
+
+
+def hdl_wid_20207(params: WIDParams):
+    interval_match = re.search(
+        r'LE_Scan_Interval:\s*\[(\d+)', params.description)
+    window_match = re.search(
+        r'LE_Scan_Window:\s*\[(\d+)', params.description)
+    if not interval_match or not window_match:
+        return False
+
+    interval = int(interval_match.group(1))
+    window = int(window_match.group(1))
+    stack = get_stack()
+
+    return bool(stack.sps.wait_scan_interval_window_written(
+        interval, window, timeout=10))

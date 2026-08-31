@@ -886,9 +886,8 @@ This checklist covers the one-time setup. Once completed, use [Appendix B](#appe
 ### Smoke Test
 
 ```
-[ ] PTS server running on Windows (py autoptsserver.py -S 65000 -C 65001)
-[ ] Can ping Windows host from WSL (ping <WINDOWS_IP>)
-[ ] Run: python3 autoptsclient-zephyr.py ... -c GAP/BROB/BCST/BV-01-C
+[ ] XDS110 shared once with usbipd bind (Administrator PowerShell)
+[ ] Run: tools/run_autopts_oneclick.sh --tests GAP/BROB/BCST/BV-01-C ...
 [ ] Verify: PASS
 ```
 
@@ -896,116 +895,24 @@ This checklist covers the one-time setup. Once completed, use [Appendix B](#appe
 
 ## Appendix B: Daily Startup Procedure
 
-Every time you power on your machine and connect the board, follow these steps in order.
-
-### Step 1: Connect Hardware (Windows)
-
-1. Plug the LP-EM-CC2340R53 board into USB.
-2. Open **PowerShell** (as Administrator if needed) and attach the USB device to WSL:
-
-```powershell
-usbipd attach --wsl --busid 2-2
-```
-
-> **Note:** The bus ID (`2-2`) may change if you use a different USB port. If the command fails, run `usbipd list` first to find the current bus ID of the XDS110 device.
-
-### Step 2: Enter the Development Environment (WSL)
-
-1. Open your WSL / Ubuntu terminal.
-
-2. Navigate to your workspace and activate the Python virtual environment:
+After the one-time `usbipd bind` setup, the runner owns USB attachment, TTY
+selection, IP detection, Windows server startup, client startup, and report
+generation.
 
 ```bash
-cd ~/ti-workspace/zephyr
-source ~/ti-workspace/.venv/bin/activate
+cd ~/ti-embedded-stack/auto-pts
+./tools/run_autopts_oneclick.sh \
+  --workspace-file 'C:\Users\USER\Documents\PTS\project.pqw6' \
+  --board lp_em_cc2340r53
 ```
 
-> You should see `(.venv)` at the beginning of your terminal prompt. Without this, `west` and other tools will not be available.
-
-3. *(Optional)* Open VS Code connected to the WSL filesystem:
-
-```bash
-code .
-```
-
-This launches VS Code on Windows but connected to the Linux files via the WSL extension.
-
-### Step 3: Verify the Serial Port
+Rebuild and flash only after firmware changes or when the board does not already
+contain the required tester image:
 
 ```bash
-ls /dev/ttyACM*
-# Expected: /dev/ttyACM0  /dev/ttyACM1
-
-# If the ports don't appear:
-sudo modprobe cdc_acm
-
-# Grant access:
-sudo chmod 666 /dev/ttyACM0
-```
-
-### Step 4: Build & Flash (if firmware changed)
-
-If you modified the BTP tester firmware or need to reflash:
-
-```bash
-cd ~/ti-workspace/zephyr
+cd ~/ti-embedded-stack/zephyr
 west build -b lp_em_cc2340r53/cc2340r53 tests/bluetooth/tester/ -p always
 west flash
 ```
 
-### Step 5: Start the PTS Server (Windows)
-
-On the Windows host, open CMD or PowerShell:
-
-```cmd
-cd auto-pts
-py autoptsserver.py -S 65000 -C 65001
-```
-
-Leave this terminal open.
-
-### Step 6: Run Tests (WSL)
-
-```bash
-cd ~/auto-pts
-
-python3 ./autoptsclient-zephyr.py zephyr-master \
-  "Z:\home\david\ti-workspace\zephyr\build\zephyr\zephyr.elf" \
-  -t /dev/ttyACM0 -b lp_em_cc2340r53 \
-  -i 172.21.128.1 -S 65000 -C 65001 \
-  -l $(hostname -I | awk '{print $1}') \
-  --iut-mode tty --tty-baudrate 115200 \
-  -d -c GAP
-```
-
-> Adjust the `-i` IP address if your Windows host IP is different. Run `ipconfig` on Windows or `ip route show | grep default | awk '{print $3}'` in WSL to find it.
-
-### Quick Reference: Daily Commands Summary
-
-```bash
-# --- WSL ---
-cd ~/ti-workspace/zephyr
-source ~/ti-workspace/.venv/bin/activate
-sudo chmod 666 /dev/ttyACM0
-
-# (If rebuild needed)
-west build -b lp_em_cc2340r53/cc2340r53 tests/bluetooth/tester/ -p always
-west flash
-
-# Run tests
-cd ~/auto-pts
-python3 ./autoptsclient-zephyr.py zephyr-master \
-  "Z:\home\david\ti-workspace\zephyr\build\zephyr\zephyr.elf" \
-  -t /dev/ttyACM0 -b lp_em_cc2340r53 \
-  -i 172.21.128.1 -S 65000 -C 65001 \
-  -l $(hostname -I | awk '{print $1}') \
-  --iut-mode tty --tty-baudrate 115200 \
-  -d -c GAP
-```
-
-```powershell
-# --- Windows (PowerShell) ---
-usbipd attach --wsl --busid 2-2
-cd auto-pts
-py autoptsserver.py -S 65000 -C 65001
-```
+See [wsl_oneclick_runner.md](wsl_oneclick_runner.md) for behavior and overrides.

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <name>ti-services-smoke</name>
+  <pics>
+    <profile>
+      <name>BLS</name>
+      <item><table>0</table><row>1</row></item>
+      <item><table>1</table><row>2</row></item>
+      <item><table>2</table><row>1</row></item>
+      <item><table>2</table><row>2</row></item>
+      <item><table>2</table><row>12</row></item>
+      <item><table>3</table><row>2</row></item>
+      <item><table>3</table><row>4</row></item>
+      <item><table>3</table><row>5</row></item>
+      <item><table>3</table><row>6</row></item>
+    </profile>
+    <profile>
+      <name>WSS</name>
+      <item><table>0</table><row>1</row></item>
+      <item><table>2</table><row>2</row></item>
+      <item><table>4</table><row>1</row></item>
+      <item><table>4</table><row>2</row></item>
+      <item><table>5</table><row>1b</row></item>
+      <item><table>5</table><row>2</row></item>
+      <item><table>5</table><row>3</row></item>
+      <item><table>5</table><row>4</row></item>
+    </profile>
+    <profile>
+      <name>SCPS</name>
+      <item><table>0</table><row>1</row></item>
+      <item><table>1</table><row>2</row></item>
+      <item><table>2</table><row>1</row></item>
+      <item><table>2</table><row>2</row></item>
+      <item><table>3</table><row>2</row></item>
+      <item><table>3</table><row>3</row></item>
+    </profile>
+  </pics>
+</project>

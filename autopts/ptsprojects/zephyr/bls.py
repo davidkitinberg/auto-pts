@@ -30,7 +30,6 @@ def set_pixits(ptses):
     pts.set_pixit("BLS", "TSPX_use_dynamic_pin", "FALSE")
     pts.set_pixit("BLS", "TSPX_delete_ltk", "FALSE")
     pts.set_pixit("BLS", "TSPX_security_enabled", "FALSE")
-    pts.set_pixit("BLS", "TSPX_iut_setup_att_over_br_edr", "FALSE")
     pts.set_pixit("BLS", "TSPX_tester_appearance", "0000")
 
 

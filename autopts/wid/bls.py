@@ -38,3 +38,8 @@ def hdl_wid_20108(_: WIDParams):
 def hdl_wid_20109(_: WIDParams):
     btp.bps_indicate()
     return True
+
+
+def hdl_wid_7(_: WIDParams):
+    btp.bps_indicate()
+    return True
